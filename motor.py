@@ -18,7 +18,6 @@ class MotorStep:
             Pin(in3, Pin.OUT),
             Pin(in4, Pin.OUT)
         ]
-
         self.step_sequence_semi = [
             [1, 0, 0, 1],
             [1, 0, 0, 0],
@@ -30,40 +29,47 @@ class MotorStep:
             [0, 0, 0, 1]
         ]
 
-    def step_semi(self, direction: int, step: int):
+    def exec(self, direction: int, step: int, pause: int, delay: int):
 
+        current_step = 0
         step_count = step
         count = 0
 
-        for i in range(step_count):
-            count += 1
-            self.step_index = (self.step_index + direction) % len(self.step_sequence_semi)
+        while pause > current_step:
+
+            for i in range(step_count):
+
+                self.step_index = (self.step_index + direction) % len(self.step_sequence_semi)
+
+                for pin_index in range(len(self.stepper_pins)):
+                    pin_value = self.step_sequence_semi[self.step_index][pin_index]
+                    self.stepper_pins[pin_index].value(pin_value)
+
+                if count == 8:
+                    if direction > 0:
+                        self.current_position = self.float_sum(self.current_position, 0.70)
+                    elif direction < 0:
+                        self.current_position = self.float_sum(self.current_position, -0.70)
+                    else:
+                        self.afficheur.set_text("error direction")
+
+                    self.display_current_position(pause, current_step)
+                    count = 0
+
+                utime.sleep(0.001)
+                count += 1
 
             for pin_index in range(len(self.stepper_pins)):
-                pin_value = self.step_sequence_semi[self.step_index][pin_index]
-                self.stepper_pins[pin_index].value(pin_value)
+                self.stepper_pins[pin_index].value(0)
 
-            if count == 8:
-                if direction > 0:
-                    self.current_position = self.float_sum(self.current_position, 0.70)
-                elif direction < 0:
-                    self.current_position = self.float_sum(self.current_position, -0.70)
-                else:
-                    self.afficheur.set_text("error direction")
+            self.adjust_value()
+            self.display_current_position(pause, current_step)
 
-                self.display_current_position()
-                count = 0
+            current_step += 1
+            utime.sleep(delay)
 
-            utime.sleep(0.001)
-
-        for pin_index in range(len(self.stepper_pins)):
-            self.stepper_pins[pin_index].value(0)
-
-        self.adjust_value()
-        self.display_current_position()
-
-    def display_current_position(self):
-        self.afficheur.set_text("{} deg".format(str(ceil(self.current_position))))
+    def display_current_position(self, tt_step: int, current_step: int):
+        self.afficheur.set_text("{0} deg \n{1}/{2} step".format(str(ceil(self.current_position)), str(current_step+1), str(tt_step)))
 
     def adjust_value(self):
 

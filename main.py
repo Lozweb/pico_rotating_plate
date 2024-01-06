@@ -3,6 +3,8 @@ from machine import Pin
 from lcd import Lcd
 from button import Button
 from menu import Menu
+from motor import MotorStep
+from settings import Settings
 
 exit_btn = Button(15)
 ok_btn = Button(13)
@@ -10,18 +12,16 @@ down_btn = Button(14)
 up_btn = Button(12)
 
 afficheur = Lcd(1, Pin(2), Pin(3), 400000, 0)
-# motor = MotorStep(18, 19, 20, 21, menu)
-
 menu = Menu(
     afficheur.get_instance(),
-    ["start", "settings", "fake menu"],
+    ["start", "settings"],
     [
-        ["step", "direction"],
-        ["fake", "other"]
+        ["total degree", "nb steps", "delay", "direction"],
     ]
 )
-
+motor = MotorStep(18, 19, 20, 21, menu)
 menu.select(True)
+settings = Settings()
 
 while True:
 
@@ -41,17 +41,20 @@ while True:
         if selected_option == "settings":
             menu.validate("sub_menu", 0)
 
-        if selected_option == "fake menu":
-            menu.validate("sub_menu", 1)
-
         if selected_option == "start":
-            print("start programe")
+            motor.exec(
+                settings.direction,
+                settings.get_step(),
+                settings.pause,
+                settings.delay
+            )
 
         while ok_btn.button_pressed():
             utime.sleep_ms(50)
 
     if exit_btn.button_pressed():
         menu.exit()
+        motor.current_position = 0
         while ok_btn.button_pressed():
             utime.sleep_ms(50)
 
