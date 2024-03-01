@@ -22,6 +22,7 @@ menu = Menu(
 motor = MotorStep(18, 19, 20, 21, menu)
 menu.select(True)
 settings = Settings()
+settings.init_default_preset()
 
 while True:
 
