@@ -1,0 +1,25 @@
+{
+  "presets": [
+    {
+      "name": "preset-1",
+      "tt_degree": 4096,
+      "pause": 8,
+      "delay": 1,
+      "direction": 1
+    },
+    {
+      "name": "preset-2",
+      "tt_degree": 4096,
+      "pause": 1,
+      "delay": 2,
+      "direction": 1
+    },
+    {
+      "name": "preset-3",
+      "tt_degree": 4096,
+      "pause": 32,
+      "delay": 2,
+      "direction": 1
+    }
+  ]
+}
