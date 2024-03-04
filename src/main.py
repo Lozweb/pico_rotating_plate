@@ -22,7 +22,6 @@ menu = Menu(
 motor = MotorStep(18, 19, 20, 21, menu)
 menu.select(True)
 settings = Settings()
-settings.init_default_preset()
 
 while True:
 
@@ -44,10 +43,10 @@ while True:
 
         if selected_option == "start":
             motor.exec(
-                settings.direction,
-                settings.get_step(),
-                settings.pause,
-                settings.delay
+                settings.current_preset.direction,
+                settings.current_preset.tt_degree // settings.current_preset.pause,
+                settings.current_preset.pause,
+                settings.current_preset.delay
             )
 
         while ok_btn.button_pressed():
