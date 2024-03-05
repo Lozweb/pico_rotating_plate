@@ -2,22 +2,22 @@
   "presets": [
     {
       "name": "preset-1",
-      "tt_degree": 4096,
-      "pause": 8,
+      "tt_degree": 360,
+      "pause": 5,
       "delay": 1,
       "direction": 1
     },
     {
       "name": "preset-2",
-      "tt_degree": 4096,
+      "tt_degree": 180,
       "pause": 1,
       "delay": 2,
-      "direction": 1
+      "direction": -1
     },
     {
       "name": "preset-3",
-      "tt_degree": 4096,
-      "pause": 32,
+      "tt_degree": 90,
+      "pause": 2,
       "delay": 2,
       "direction": 1
     }

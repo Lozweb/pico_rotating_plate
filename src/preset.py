@@ -16,7 +16,7 @@ class Preset:
         data = f.read()
         return json.loads(data)
 
-    def load_preset_by_name(self, name:str):
+    def load_preset_by_name(self, name: str):
         data = self.load_presets_data()
         for preset in data['presets']:
             if preset['name'] == name:

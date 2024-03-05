@@ -44,7 +44,7 @@ while True:
         if selected_option == "start":
             motor.exec(
                 settings.current_preset.direction,
-                settings.current_preset.tt_degree // settings.current_preset.pause,
+                settings.current_preset.tt_degree,
                 settings.current_preset.pause,
                 settings.current_preset.delay
             )
