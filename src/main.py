@@ -8,14 +8,15 @@ from settings import Settings
 
 exit_btn = Button(15)
 ok_btn = Button(13)
-down_btn = Button(14)
-up_btn = Button(12)
+down_btn = Button(12)
+up_btn = Button(14)
 
 afficheur = Lcd(1, Pin(2), Pin(3), 400000, 0)
 menu = Menu(
     afficheur.get_instance(),
-    ["start", "settings"],
+    ["start", "presets", "settings"],
     [
+        ["preset-1", "preset-2", "preset-3", "preset-4"],
         ["total degree", "nb steps", "delay", "direction"],
     ]
 )
@@ -36,10 +37,19 @@ while True:
             utime.sleep_ms(50)
 
     if ok_btn.button_pressed():
-        selected_option = menu.get_current_option_seleceted()
+        selected_option = menu.get_current_option_selected()
+
+        if selected_option == "presets":
+            menu.validate("sub_menu", 0)
 
         if selected_option == "settings":
-            menu.validate("sub_menu", 0)
+            menu.validate("sub_menu", 1)
+
+        if selected_option == "preset-1":
+            menu.validate("presets_selection")
+
+        if selected_option == "total degree":
+            menu.validate("settings_selection")
 
         if selected_option == "start":
             motor.exec(

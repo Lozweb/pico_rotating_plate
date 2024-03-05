@@ -52,7 +52,7 @@ class MotorStep:
                 if current_cycle_step == 8:
                     self.set_current_position(direction)
                     current_cycle_step = 0
-                    self.display_current_position(tt_user_step, current_user_step, total_step_count)
+                    self.display_current_position(tt_user_step, current_user_step)
 
                 current_cycle_step += 1
                 total_step_count += 1
@@ -70,6 +70,6 @@ class MotorStep:
     def set_current_position(self, direction: int):
         self.current_position = self.current_position + (self.deg_by_cycle * direction)
 
-    def display_current_position(self, tt_step: int, current_step: int, count: int):
+    def display_current_position(self, tt_step: int, current_step: int):
         self.afficheur.set_text(
-            "{0} d {3} \n{1}/{2} step".format(str(self.current_position), str(current_step), str(tt_step), str(count)))
+            "{0} d\n{1}/{2} step".format(str(int(self.current_position)), str(current_step+1), str(tt_step)))

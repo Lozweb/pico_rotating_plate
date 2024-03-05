@@ -1,3 +1,5 @@
+import utime
+
 from lcd import Lcd
 
 
@@ -53,8 +55,18 @@ class Menu:
         if action == "sub_menu":
             self.select(False, sub_menu_index)
 
+        if action == "presets_selection":
+            self.set_text("Presets selection")
+            utime.sleep(2)
+            self.exit()
+
+        if action == "settings_selection":
+            self.set_text("Settings selection")
+            utime.sleep(2)
+            self.exit()
+
     def exit(self):
         self.select(True)
 
-    def get_current_option_seleceted(self):
+    def get_current_option_selected(self):
         return self.current_menu[self.current_menu_selected]
