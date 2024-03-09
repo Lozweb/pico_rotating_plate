@@ -15,6 +15,3 @@ class Lcd:
 
     def get_i2c_bus_address(self, device: int):
         return self.i2c.scan()[device]
-
-    def get_instance(self):
-        return self

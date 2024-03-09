@@ -20,6 +20,13 @@
       "pause": 2,
       "delay": 2,
       "direction": 1
+    },
+        {
+      "name": "preset-4",
+      "tt_degree": 360,
+      "pause": 12,
+      "delay": 1,
+      "direction": 1
     }
   ]
 }

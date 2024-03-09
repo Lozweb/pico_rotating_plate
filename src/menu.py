@@ -1,24 +1,40 @@
-import utime
-
 from lcd import Lcd
+from settings import Settings
 
 
 class Menu:
 
-    def __init__(self, lcd: Lcd, main_menu, sub_menus):
+    def __init__(self, lcd: Lcd):
         self.afficheur = lcd
-        self.main_menu = main_menu
-        self.sub_menus = sub_menus
+        self.settings = Settings()
+        self.main_menu = ["start", "presets", "settings"]
+        self.sub_menus = [
+            ["preset-1", "preset-2", "preset-3", "preset-4"],
+            ["set-degree", "set-steps", "set-delay", "set-direction"],
+        ]
         self.current_menu_selected = 0
         self.current_menu_start_index = 0
-        self.current_menu = main_menu
+        self.current_menu = self.main_menu
+        self.display(self.current_menu)
+
+    def validate(self, action, sub_menu_index: int = 0):
+        if action == "sub_menu":
+            self.select(False, sub_menu_index)
+
+    def action(self, action: str, values: str):
+        if action == "preset_settings":
+            self.settings.load_preset(values)
+            self.return_home()
+
+    def return_home(self):
+        self.current_menu = self.main_menu
+        self.current_menu_start_index = 0
+        self.current_menu_selected = 0
+        self.display(self.current_menu)
 
     def select(self, is_main: bool, sub_menu_index: int = 0):
         if is_main:
-            self.current_menu = self.main_menu
-            self.current_menu_start_index = 0
-            self.current_menu_selected = 0
-            self.display(self.current_menu)
+            self.return_home()
         else:
             self.current_menu = self.sub_menus[sub_menu_index]
             self.current_menu_start_index = 0
@@ -50,20 +66,6 @@ class Menu:
     def set_text(self, txt: str):
         self.afficheur.lcd.clear()
         self.afficheur.lcd.putstr(txt)
-
-    def validate(self, action, sub_menu_index: int = 0):
-        if action == "sub_menu":
-            self.select(False, sub_menu_index)
-
-        if action == "presets_selection":
-            self.set_text("Presets selection")
-            utime.sleep(2)
-            self.exit()
-
-        if action == "settings_selection":
-            self.set_text("Settings selection")
-            utime.sleep(2)
-            self.exit()
 
     def exit(self):
         self.select(True)
