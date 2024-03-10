@@ -19,14 +19,14 @@ class Preset:
 
     @staticmethod
     def load_presets_data():
-        f = open('presets.json', 'a')
+        f = open('src/presets.json', 'a')
         data = f.read()
         f.close()
         return json.loads(data)
 
     @staticmethod
     def save_presets_data(data):
-        f = open('presets.json', 'w')
+        f = open('src/presets.json', 'w')
         json_data = json.dumps(data)
         f.write(json_data)
         f.close()

@@ -30,44 +30,100 @@ class Menu:
         if action == "sub_menu":
             self.select(False, sub_menu_index)
 
+    def action_validate(self):
+        self.is_in_settings = False
+        self.settings.save_preset()
+        self.return_home()
+        while self.ok_btn.button_pressed():
+            utime.sleep_ms(50)
+
+    def action_exit(self):
+        self.is_in_settings = False
+        self.return_home()
+        while self.exit_btn.button_pressed():
+            utime.sleep_ms(50)
+
+    def action_increment(self, parameter):
+        parameter += 1
+        while self.up_btn.button_pressed():
+            utime.sleep_ms(50)
+        return parameter
+
+    def action_decrement(self, parameter):
+        parameter -= 1
+        while self.up_btn.button_pressed():
+            utime.sleep_ms(50)
+        return parameter
+
     def action(self, action: str, values: str):
         if action == "preset_settings":
             self.settings.load_preset(values)
             self.return_home()
-        else:                
-            if values == "set-delay":
-                
+
+        else:
+
+            if values == "set-degree":
                 while self.ok_btn.button_pressed():
                     utime.sleep_ms(50)
-                
                 self.is_in_settings = True
                 while self.is_in_settings:
-                            
-                    self.set_text("delay : " + str(self.settings.current_preset.delay) + " sec")
-
+                    self.set_text("degree : " + str(self.settings.current_preset.tt_degree) + " d")
                     if self.up_btn.button_pressed():
-                        self.settings.current_preset.delay += 1
-                        while self.up_btn.button_pressed():
-                            utime.sleep_ms(50)
-
+                        self.settings.current_preset.tt_degree = self.action_decrement(self.settings.current_preset.tt_degree)
                     if self.down_btn.button_pressed():
-                        self.settings.current_preset.delay -= 1
-                        while self.down_btn.button_pressed():
-                            utime.sleep_ms(50)
-
+                        self.settings.current_preset.tt_degree = self.action_increment(self.settings.current_preset.tt_degree)
                     if self.ok_btn.button_pressed():
-                        self.is_in_settings = False
-                        self.settings.save_preset()
-                        self.return_home()
-                        while self.ok_btn.button_pressed():
-                            utime.sleep_ms(50)
-
+                        self.action_validate()
                     if self.exit_btn.button_pressed():
-                        self.is_in_settings = False
-                        self.return_home()
-                        while self.exit_btn.button_pressed():
-                            utime.sleep_ms(50)
+                        self.action_exit()
+                    utime.sleep(0.1)
 
+            if values == "set-steps":
+                while self.ok_btn.button_pressed():
+                    utime.sleep_ms(50)
+                self.is_in_settings = True
+                while self.is_in_settings:
+                    self.set_text("step : " + str(self.settings.current_preset.pause))
+                    if self.up_btn.button_pressed():
+                        self.settings.current_preset.pause = self.action_decrement(self.settings.current_preset.pause)
+                    if self.down_btn.button_pressed():
+                        self.settings.current_preset.pause = self.action_increment(self.settings.current_preset.pause)
+                    if self.ok_btn.button_pressed():
+                        self.action_validate()
+                    if self.exit_btn.button_pressed():
+                        self.action_exit()
+                    utime.sleep(0.1)
+
+            if values == "set-delay":
+                while self.ok_btn.button_pressed():
+                    utime.sleep_ms(50)
+                self.is_in_settings = True
+                while self.is_in_settings:
+                    self.set_text("delay : " + str(self.settings.current_preset.delay) + " sec")
+                    if self.up_btn.button_pressed():
+                        self.settings.current_preset.delay = self.action_decrement(self.settings.current_preset.delay)
+                    if self.down_btn.button_pressed():
+                        self.settings.current_preset.delay = self.action_increment(self.settings.current_preset.delay)
+                    if self.ok_btn.button_pressed():
+                        self.action_validate()
+                    if self.exit_btn.button_pressed():
+                        self.action_exit()
+                    utime.sleep(0.1)
+
+            if values == "set-direction":
+                while self.ok_btn.button_pressed():
+                    utime.sleep_ms(50)
+                self.is_in_settings = True
+                while self.is_in_settings:
+                    self.set_text("direction : " + str(self.settings.current_preset.direction))
+                    if self.up_btn.button_pressed():
+                        self.settings.current_preset.direction = self.action_decrement(self.settings.current_preset.direction)
+                    if self.down_btn.button_pressed():
+                        self.settings.current_preset.direction = self.action_increment(self.settings.current_preset.direction)
+                    if self.ok_btn.button_pressed():
+                        self.action_validate()
+                    if self.exit_btn.button_pressed():
+                        self.action_exit()
                     utime.sleep(0.1)
 
     def return_home(self):
