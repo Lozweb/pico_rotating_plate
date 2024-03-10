@@ -10,27 +10,26 @@ class Preset:
         self.delay = None
         self.direction = None
 
-    @staticmethod
-    def preset_factory(name: str, tt_degree: int, pause: int, delay:int, direction:int):
-        preset = Preset()
-        return {
-            preset.name: name,
-            preset.tt_degree: tt_degree,
-            preset.pause: pause,
-            preset.delay: delay,
-            preset.direction: direction
-        }
+    def set_values(self, name: str, tt_degree: int, pause: int, delay:int, direction:int):
+        self.name = name,
+        self.tt_degree = tt_degree,
+        self.pause = pause,
+        self.delay = delay,
+        self.direction = direction
 
     @staticmethod
     def load_presets_data():
-        f = open('src/presets.json', 'a')
+        f = open('presets.json', 'a')
         data = f.read()
+        f.close()
         return json.loads(data)
 
     @staticmethod
     def save_presets_data(data):
-        with open('src/presets.json', 'w') as f:
-            json.dump(data, f)
+        f = open('presets.json', 'w')
+        json_data = json.dumps(data)
+        f.write(json_data)
+        f.close()
 
     def load_preset_by_name(self, name: str):
         data = self.load_presets_data()
@@ -42,3 +41,18 @@ class Preset:
                 self.delay = preset['delay']
                 self.direction = preset['direction']
         return self
+    
+    def get_name(self):
+        return self.name
+    
+    def get_tt_degree(self):
+        return self.tt_degree
+    
+    def get_pause(self):
+        return self.pause
+    
+    def get_delay(self):
+        return self.delay
+    
+    def get_direction(self):
+        return self.direction

@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.11 (button)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (button)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (pico_rotating_plate)" project-jdk-type="Python SDK" />
 </project>

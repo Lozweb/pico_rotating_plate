@@ -57,13 +57,7 @@ class Menu:
 
                     if self.ok_btn.button_pressed():
                         self.is_in_settings = False
-                        self.settings.save_preset(Preset.preset_factory(
-                            self.settings.current_preset.name,
-                            self.settings.current_preset.tt_degree,
-                            self.settings.current_preset.pause,
-                            self.settings.current_preset.delay,
-                            self.settings.current_preset.direction
-                        ))
+                        self.settings.save_preset()
                         self.return_home()
                         while self.ok_btn.button_pressed():
                             utime.sleep_ms(50)
