@@ -1,7 +1,5 @@
 import utime
-
 from lcd import Lcd
-from preset import Preset
 from settings import Settings
 from button import Button
 
@@ -33,24 +31,26 @@ class Menu:
     def action_validate(self):
         self.is_in_settings = False
         self.settings.save_preset()
-        self.return_home()
+        self.return_settings()
         while self.ok_btn.button_pressed():
             utime.sleep_ms(50)
 
     def action_exit(self):
         self.is_in_settings = False
-        self.return_home()
+        self.return_settings()
         while self.exit_btn.button_pressed():
             utime.sleep_ms(50)
 
-    def action_increment(self, parameter):
-        parameter += 1
+    def action_increment(self, parameter, value: int):
+        parameter += value
         while self.up_btn.button_pressed():
             utime.sleep_ms(50)
         return parameter
 
-    def action_decrement(self, parameter):
-        parameter -= 1
+    def action_decrement(self, parameter, value: int):
+        parameter -= value
+        if parameter <= 0:
+            parameter = value
         while self.up_btn.button_pressed():
             utime.sleep_ms(50)
         return parameter
@@ -69,9 +69,9 @@ class Menu:
                 while self.is_in_settings:
                     self.set_text("degree : " + str(self.settings.current_preset.tt_degree) + " d")
                     if self.up_btn.button_pressed():
-                        self.settings.current_preset.tt_degree = self.action_decrement(self.settings.current_preset.tt_degree)
+                        self.settings.current_preset.tt_degree = self.action_decrement(self.settings.current_preset.tt_degree, 45)
                     if self.down_btn.button_pressed():
-                        self.settings.current_preset.tt_degree = self.action_increment(self.settings.current_preset.tt_degree)
+                        self.settings.current_preset.tt_degree = self.action_increment(self.settings.current_preset.tt_degree, 45)
                     if self.ok_btn.button_pressed():
                         self.action_validate()
                     if self.exit_btn.button_pressed():
@@ -85,9 +85,9 @@ class Menu:
                 while self.is_in_settings:
                     self.set_text("step : " + str(self.settings.current_preset.pause))
                     if self.up_btn.button_pressed():
-                        self.settings.current_preset.pause = self.action_decrement(self.settings.current_preset.pause)
+                        self.settings.current_preset.pause = self.action_decrement(self.settings.current_preset.pause, 1)
                     if self.down_btn.button_pressed():
-                        self.settings.current_preset.pause = self.action_increment(self.settings.current_preset.pause)
+                        self.settings.current_preset.pause = self.action_increment(self.settings.current_preset.pause, 1)
                     if self.ok_btn.button_pressed():
                         self.action_validate()
                     if self.exit_btn.button_pressed():
@@ -101,9 +101,9 @@ class Menu:
                 while self.is_in_settings:
                     self.set_text("delay : " + str(self.settings.current_preset.delay) + " sec")
                     if self.up_btn.button_pressed():
-                        self.settings.current_preset.delay = self.action_decrement(self.settings.current_preset.delay)
+                        self.settings.current_preset.delay = self.action_decrement(self.settings.current_preset.delay, 1)
                     if self.down_btn.button_pressed():
-                        self.settings.current_preset.delay = self.action_increment(self.settings.current_preset.delay)
+                        self.settings.current_preset.delay = self.action_increment(self.settings.current_preset.delay, 1)
                     if self.ok_btn.button_pressed():
                         self.action_validate()
                     if self.exit_btn.button_pressed():
@@ -117,9 +117,13 @@ class Menu:
                 while self.is_in_settings:
                     self.set_text("direction : " + str(self.settings.current_preset.direction))
                     if self.up_btn.button_pressed():
-                        self.settings.current_preset.direction = self.action_decrement(self.settings.current_preset.direction)
+                        self.settings.current_preset.direction = -1
+                        while self.up_btn.button_pressed():
+                            utime.sleep_ms(50)
                     if self.down_btn.button_pressed():
-                        self.settings.current_preset.direction = self.action_increment(self.settings.current_preset.direction)
+                        self.settings.current_preset.direction = 1
+                        while self.down_btn.button_pressed():
+                            utime.sleep_ms(50)
                     if self.ok_btn.button_pressed():
                         self.action_validate()
                     if self.exit_btn.button_pressed():
@@ -131,6 +135,9 @@ class Menu:
         self.current_menu_start_index = 0
         self.current_menu_selected = 0
         self.display(self.current_menu)
+
+    def return_settings(self):
+        self.validate("sub_menu", 1)
 
     def select(self, is_main: bool, sub_menu_index: int = 0):
         if is_main:
