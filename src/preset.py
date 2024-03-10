@@ -11,10 +11,26 @@ class Preset:
         self.direction = None
 
     @staticmethod
+    def preset_factory(name: str, tt_degree: int, pause: int, delay:int, direction:int):
+        preset = Preset()
+        return {
+            preset.name: name,
+            preset.tt_degree: tt_degree,
+            preset.pause: pause,
+            preset.delay: delay,
+            preset.direction: direction
+        }
+
+    @staticmethod
     def load_presets_data():
-        f = open('presets.json', 'a')
+        f = open('src/presets.json', 'a')
         data = f.read()
         return json.loads(data)
+
+    @staticmethod
+    def save_presets_data(data):
+        with open('src/presets.json', 'w') as f:
+            json.dump(data, f)
 
     def load_preset_by_name(self, name: str):
         data = self.load_presets_data()
@@ -26,4 +42,3 @@ class Preset:
                 self.delay = preset['delay']
                 self.direction = preset['direction']
         return self
-            
